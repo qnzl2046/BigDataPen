@@ -1,4 +1,4 @@
-BigDataPen
+大数据学习
 ==========
 
-BigDataNote
+这里记录了我们学习Linux和大数据的干货，我们踩过的坑。
