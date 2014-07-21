@@ -1,3 +1,67 @@
 各位！
 
-  我们需要讨论笔记分类方法！请给出自己的分类大家共同参考笔记分类将在7月22日确定
+  我们需要讨论笔记分类方法！请给出自己的分类大家共同参考笔记分类将在7月22日确定,草稿版如下：
+  
+  大家也可以完全打破 这个分类方式 提供更好的分类方式
+
+
+笔记分类
+	虚拟机配置
+		认识虚拟机的网卡
+			桥接等配置的不同
+	Linux
+		基础概念
+			加密：单向(不可逆) 双向对称加密和不对称加密
+			SSL https SLT
+			文件的权限位
+			| 管道
+			> 和 >>
+		基本命令
+			su
+
+			ls ll
+			ifconfig
+			netstat
+			ping
+
+			echo
+			touch
+			cat
+			more
+			tail
+			ps (jps)
+			kill
+			grep
+			awk
+
+			mkdir
+			tar
+			cp
+			mv
+			rm
+			chown
+			chmod
+
+			ulimit
+			rpm
+			source
+			service (例如 service network)
+			scp
+			mount(unmount)
+
+		认识Linux的网卡
+			配置IP 网址映射等
+		学习使用Secure Shell（SSH）
+			用户名密码连接
+			秘钥连接
+
+		vi (vim)使用基础
+		linux 下 java JDK配置
+		/etc下的配置文件
+			/etc/inittab
+			/etc/hosts
+			/etc/profile
+			/etc/security/limits.config
+			/etc/sysconfig/network-scripts/ifcfg-eth0
+			/etc/sysconfig/network
+	Hadoop 基础配置
