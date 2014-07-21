@@ -1,0 +1,825 @@
+本笔记为第一天学习笔记的多个人集合，没有整理，留在这里作为备份供领取任务的同学参考
+请珍惜他人劳动成果 帮助整理 领取任务
+
+如何领取任务：在确定目录分类后，请各位踊跃领取任务。领取任务请联系fskhex@gmail.com
+
+
+SOA
+
+SUM jbi 提出、实现 BPMN：以XML作为流程编排工具 BPEL：用webservice解决一切
+IBM SCA 提出、实现 SDO：数据标准
+
+SAAS：软件就是服务
+
+云计算是一门交叉学科
+分布式计算
+并行计算
+效用计算
+网络储存
+虚拟化
+负载均衡
+
+IAAS：基础设施即服务，openstack管理虚拟机，典型业务阿里云
+PAAS：平台及服务，大数据就是从这个概念落地的
+
+最后：XAAS：一切都是服务
+
+满足以下条件的数据就是大数据
+Volume		(数据量大)
+Velocity	(要求稳定并且尽可能快的处理速度)
+Variety		(数据类型繁多)
+Value		(从数据中可以获取有价值的信息)
+
+CRUD增删改查
+
+如何处理大数据
+
+批量处理大数据
+流式迭代处理大数据(课程不涉及)
+流计算不够精准，需要通过批量计算进行校正
+
+批量处理大数据的利器：Hadoop
+
+预备知识
+
+Linux用的虚拟机：
+KVM
+Xen
+
+网络设置常用2两种
+桥接网络：桥接本地实体机网卡，ip与实体机网卡配置方案相同，多数公司采用DHCP动态获取，实验环境中登录外网常用
+DHCP：动态获取ip
+
+仅主机：(Host-Only)适配器：与本地实体机形成闭环局域网，不能访问外界，实验环境搭建静态ip环境常用
+
+Winscp
+
+mkdir /mnt/share
+mount -t vboxsf share /mnt/share
+光盘挂哪/media
+
+一块网卡可以有多个IP，而且都可以访问到，剩下的是虚ip
+
+setup工具
+防火墙配置:
+SELinux ：防火墙软件
+IPTables ：黑白名单
+
+网络配置：
+DNS配置：主机名=ip!=域名
+
+22:SSH协议端口
+23：FTP端口
+
+SSH协议:SSH SCP
+
+Windows工具：WinSCP、Xshell
+
+图形界面和非图形界面切换
+vi /etc/inittab 
+	id:5:initdefault -> id:3:initdefault
+
+vi testday01
+	/fk		(查fk)
+	:set nu	(显示行号)
+除root外，每建一个新用户都会在/home下建个与用户名同名的文件夹作为用户目录
+切换目录：su - xxx
+
+配置主机名
+vi /etc/sysconfig/network
+
+改主机名
+vi /etc/hosts
+	ip 主机名
+ping ip
+
+配置DNS
+/etc/resolv.conf
+
+jdk一般放在/opt下
+./jdk-6u32-linux-x64.bin
+
+chown -R 用户名:用户组 jdk-6u32-linux-x64.bin (更改文件所有者)
+
+推书：深入理解java虚拟机：JVM高级特性与最佳实践
+
+vi /etc/profile
+
+source /etc/profile	配置不重启生效
+
+查看最大文件数限制
+ulimit -n
+
+vi /etc/security/limits.conf在文件最后加上两行
+* - nproc 65535
+* - nofile 65535
+如果不做修改，系统在大数据高并发情况下会报too many file open 错误
+
+常用命令
+ls,ll   -a查看所有文件
+touch	建立文件
+mkdir	创建目录
+tail -n 10 install.log 查看install.log文件最后10行
+cat 可以把所有东西放一起看
+echo "hello" > a 把"hello"写入a文件，覆盖，不是追加   >>是追加
+tail -f a 监控a文件
+netstat -anlp | grep 80 
+top 显示实际CPU使用情况
+df -ah:文件大小
+ps -ef | grep tomcat 查看tomcat进程是否运行
+kill -9 进程ID 关进程
+killall java 杀死所有java进程
+jps显示所有Java进程
+ssh username@IP[hostname] 
+scp -r file username@IP[hostname]:filename
+
+awk
+
+JNI(java桥接c的利器)
+
+PKI简介
+ssl 
+stl
+
+
+
+Hadoop：HDFS(分布式文件系统)+MapReduce(并行计算框架)
+
+GFS google的分布式存储文件系统
+MapReduce：并行计算框架
+BigTable表
+
+hortonworks：Apache授权工作组，为Hadoop提供生态环境
+
+NIO：内存文件映射
+
+secoundnamenode进程主要进行合并日志
+sharedisk：共享磁盘架构
+sharenothing
+
+das:
+nas:
+san:最贵的，适合数据库
+
+Hadoop部署
+需要:
+CentOS6
+jdk-6u32-linux-xxx.bin
+hadoop-1.0.4.tar.gz
+
+本地/opt文件访问：file:////
+
+免密码认证：chmod 600 authorized_keys
+
+
+/////////////////////////////////////////////////////////////////
+
+基于网络的计算方式就叫云计算！桥接使用服务平台，总线。sun公司实现了jbi，sca是IBM提出。jbi：bpmn和bpel规范。sca：sdo接口。
+
+软件就是服务：SARS。
+云计算：是以下技术融合的产物。
+-分布式计算：
+-并行计算：
+-效用计算：
+-网络存储：
+-虚拟化：
+-负载均衡：
+
+一切都是服务：
+云计算概念：--SAAS
+-IAAS：基础设施及服务，典型业务阿里云
+-PAAS：平台及服务
+最后：-XAAS，一切都是服务！！
+
+满足以下条件的数据就是大数据
+-Volume（数据量大）
+-Velocity（要求稳定并且尽量可能快的处理速度）
+-Variety（数据类型繁多）
+-Value（从数据中可以获取有价值的信息）
+  
+如何处理大数据
+-批量处理大数据
+-流式迭代处理大数据
+-流计算不够精准，需要通过批量计算进行校正
+批量处理大数据的利器--Hadoop
+！！！我们更贴近批量处理。
+
+虚拟机：Oracle Vbox使用介绍
+Centos6准备环境设置
+
+PKI简介：数据加密
+-常用虚拟机 KVM，Xen（linux环境架构）
+
+网卡的设置：常用两种连接方式
+--桥接网络：桥接本地实体机网卡，ip与实体机网卡配置方案相同，多数公司采用DHCP动态获取（动态分配），实验环境中登录外网常用
+--仅主机（Host-Only）适配器：与本地实体机形成闭环局域网，不能访问外界，实验环境搭建静态ip环境常用
+
+WINSCP:
+-Centos环境中通过如下命令挂在这个目录。
+mount -t vboxsf share /mnt/share
+
+每个网卡可以设置多个IP，并且那些ip叫虚拟IP。
+
+seLinux  iptables 
+setup图形化界面
+
+主机名=ip但不等于域名
+
+SSH协议：远程控制，远程传输
+SCP： 默认端口22 23为ftp  80是网页
+
+Xshell：
+防火墙，ip设置。
+
+yum update -y 更新centos系统数据
+
+winscp  和 Xshell自己下！！！！！！！
+
+关闭图形化界面
+vi /etc/inittab 回车
+移到最后
+按i，将Id的3改为5，按esc退出
+：启动vi的编辑模式
+w：保存，q退出 q！强制退出
+
+开启图形界面
+
+
+vi testday01 进文本
+按i编辑，写东西
+esc ：wq
+/fk 查找文件中的fk
+：set nu  显示行号
+
+经常配置的东西：
+hostname:
+ su -hadoop
+
+vi /etc/sysconfig/network 进去hostname
+
+vi /etc/hosts
+
+ping localhost
+ip和主机名是对应的 一个ip一个主机名，但是理论可以有多个ip
+
+./jdk-6u32-...     ./读本地，不写./读的是配置文件
+该权限：chmod 707 jdk-6u32-...     --wxr
+环境变量配置：
+CLASSPATH=.:$
+#java -version 查看版本   java两个版本 《深入理解Java虚拟机》
+环境变量vi /etc/profile  回车   变量相互引用用$
+wq之后  source /etc/profile
+							李老师： 18622618050
+查看最大文件数限制 ulimit -n
+vi /etc/security/limits.conf在文件最后加上两行
+* - nproc 65535
+* - nofile 65535  ( 贴上)
+重启一下 查看 ulimit -n
+
+ls -a 查看隐藏文件     ll：查看详细
+创建文件：touch                   
+创建目录：mkdir
+复制：cp  mv
+删除：rm
+# rm -r .bbb
+或# rm -rf .bbb
+
+# more a.txt   查看内容（自带分页）
+# tail -n 10 a.txt 倒着看10行
+# cat a b c        cat命令把所有的文件内容放一块读
+
+# echo "hello" > a 将hello放到文件a中，覆盖方式
+# echo "hello" >> a 将hello放到文件a中，追加方式
+# tail -f a     -f为监控
+# grep
+查看端口：
+# netstat -anlp | grep 8080           |是管道符
+
+jni ：！！！！！！！！！！！！查找意思？？？
+
+# ps -ef |grep tomcat
+
+# kill 9 pid
+# killall java 回车，全删
+
+jps 所有java版得
+ssh 远程操作命令
+
+
+PKI简介 密钥
+单向：抽样，完整性校验 sha1、md5，校验文件完整性。sha1更好
+双向：加密，des、aes等，速度快，性能好，但是密钥容易被拆穿
+双向非对称：-rsa等，密钥成对出现（公钥加密私钥解密，）
+公钥：加密密钥，用来加密
+私钥：签名密钥，用来签名
+ssl  stl
+U盾
+
+初始Hadoop
+Google：GFS分布式的存储文件
+MAPRDUACE：Google bigtable
+
+DFS：分布式存储（分离出独立的hadoop项目）
+
+Hadoop版本：
+-Apache 官方社区办
+-hortonworks HDP，最为活跃的社区之一
+-Cloudera发行版 CDH，使用下载最多的版本，稳定
+-Intel 发行版 商业版本
+
+核心项目：
+-CORE：核心包    3
+-HDFS：分布式文件系统   2
+-MapReduce：并行计算框架  1先看
+
+元数据是对数据的描述。数据是瓤
+
+HDFS：
+-主从结构（n+n或1+n）
+主节点：namenode，元数据，主为一个
+从节点：datanode，存数据
+
+namenode：1，往哪存；2，把数据合并（结构化）java中nio
+		secondnamenode干的是数据合并，数据备份
+datanode：存数据
+
+sharedisk：磁盘阵列（？），连接在网络上的大集群
+
+MapReduce：
+-主从结构：
+主节点：
+从节点：
+JobTracker负责：
+TaskTrackers负责：执行JobTracker分配的计算任务。算法
+数据搬运-->算法搬运
+
+特点：
+扩容，成本低，高效率，可靠性
+
+Hadoop部署方式
+单机，伪分布式 ，集群分布式（最费劲，学这个）
+
+设置ssh自动登录（无密码证书）
+
+# tar -zxvf hadoop-1.0.4
+改名，配home，path
+Hadoop不认ip，用用户名   hdfs://master:9090
+
+chmod 600 authorized_keys 改权限
+
+
+
+
+主要练命令
+按要求一步步来。
+
+
+
+////////////////////////////////////////////////////////////
+
+
+DAY01
+SOA
+大数据最早的名字是SOA
+JBI SUN公司最早实现的一套系统服务总线
+	SCA持续化组件两个标准
+		---SDO
+		---BPMN
+
+软件演变成一种服务（代号：SAAS）
+	最早的软件是搭着服务器一起出卖的（SAAS的意思是认为软件不应该作为实体被甩卖，软件应该提供服务），后来转变为本地搭建好环境部署好，然后卖服务账号，权限，之后由于并发量太过庞大，所以有了新的主张，提议将服务集群先搭建好，于是有了云计算（Cloud Computing）最早的模糊理念（1980，大型客户机到客户端-服务器的大转变之后的又一种巨变）
+	分布式计算
+	并行计算
+	效用计算
+	网络存储（Network Storage Technologies）
+	虚拟化（Virtualization）
+	负载均衡（Load Balance）
+
+后来随着软件就是服务逐渐产生了一下概念，越来越贴近核心技术：
+IAAS（基础设施及服务，典型业务阿里云）
+PAAS（平台及服务，大数据就是从这个概念落地的）
+最后演变成：XAAS--一切都是服务！！！
+
+大数据的由来
+	当服务过于集中化后，会长生很多的运营数据，但是却计算不出来，所以有了大数据的定义
+
+什么是大数据
+	--Volume（数据量大）
+	--Velocity（要求稳定并且竟可能快的处理速度）
+	--Variety（数据类型繁多）
+	--Value（从数据中可以获取有价值的信息）
+
+--数据库（CRUD）
+
+如何处理大数据
+	大致的处理方法如下
+	批量处理大数据（数据一起计算）
+	流式迭代处理大数据（数据边走边计算）
+	流计算不够精准，需要通过批量计算矫正
+批量处理大数据的利器-----Hadoop（云梯）
+	大数据的两种计算方式（流计算（数据分析，本课程不涉及流计算）和批计算（运维））
+
+虚拟机
+VMware
+Oracle VM VirturalBox（试验使用）
+KVM、Xen
+
+网卡设置
+	1、桥接（跟着外面的一致，外面若自动，桥接也是自动，外面能连接网络，桥节后就能连接网络）ip与主机配置方案相同，多数公司采用DHCP动态获取，使用环境登录外网常用
+	2、仅主机（Host-Only）适配器，主机和虚拟机形成一个封闭的虚拟环境（外面能上网，里面不能）实验环境搭建静态ip环境常用
+
+	mount -t vboxsf share /mnt/share
+	（mount挂载，若没有share目录上面命令会报错）
+	网卡设置上没有设置这一项，只有添加（方法设置为手动）
+
+黑白明道 防火墙
+setup（开启图像化界面）
+selinux
+iptables
+网卡设置一般是eth0~eth8
+SSH协议，CentOS自带远程控制协议（此处SSH不是三大框架）
+80，网页默认端口，23FTP默认端口，22SSH协议默认端口
+Xshell
+
+vi /etc/inittab 修改启动文件
+	id:5:initdefault
+	i    写入命令
+	5:有图像界面
+	3:无图像界面
+	esc 后退入命令行模式
+	:加命令 可以退出或保存
+	w 保存  q 退出
+	重启后图形界面将改变
+
+vi testday01创建文件并命名（i）
+su - 用户名（切换用户跟权限）
+su 用户名（切换用户，但是权限没有改变）
+pwd（查看当前用户名）
+vi /etc/sysconfig/network 改hostname
+vi /etc/hosts   改IP（一个IP对应一个主机名）
+
+安装jdk
+./jdk~~~~名字 ^C(不写./从环境变量开始找，写./从本地开始写)
+^C
+ll查看文件是否为可执行
+chown -R soft01:soft01 jsd~~~名字
+给文件设置权限（读写）
+chomd 707 名字（设置权限root和其他可以读写执行）（777三层用户都可读写执行）
+
+配环境变量
+vi /etc/profile
+java有两种（大端和小端，用户级和系统级）
+source /etc/profile 配置后生效
+查看最大文件数限制
+ulimit -n
+修改最大文件数限制
+vi /etc/security/limits.conf在文件最后加上两行
+* - nproc 65535
+* - nofile 65535
+
+more 文件名   查看文件有分页的功能
+tail 文件名 -n行数   查看文件（倒序查看多少行）
+
+cat 文件1 文件2 文件3    多个文件一起查看
+echo 内容> a  覆盖
+echo 内容>> a  追加
+
+JNI
+
+| grep  过滤
+
+kill -9 -进程数   关闭进程数
+killall java 所有java进程关闭
+
+ps -ef | grep 查看进程（过滤查看）
+
+私钥用来签名
+公钥用来加密
+GFS:分布式的谷歌的文件系统
+	mapreduce
+	bigtable
+	HDFS
+
+N+N  N个主带上N个从
+N  主也是从
+namenode负责：
+存源数据，他主要作用于两件事，第一件事，往哪存，第二件，隔一段时间就合并一次日志
+NIO文件与内存映射
+datanode负责
+存数据
+源数据就是描述数据的数据
+Oracle : sharedisk（磁盘共享）数据供应，传输数据到算法存放的地方（以前一般的磁盘上面没有CPU）
+磁盘阵列不是往硬盘上面装磁盘而是，网络集群
+
+大数据走的不是sharedisk（磁盘共享）而是自己用自己的磁盘，算法供应，传输算法到数据存放的地方
+mapreduce存中间数据
+
+免密码认证
+	配置的ssh里面生成的秘钥文件authoriz_keys默认权限是rw-rw-rw 不能使用，使用的话会报错，需要改成600
+
+////////////////////////////////////////////////////////////////////
+
+
+什么是云计算
+之前的技术 SOA 
+JBI 由sun公司提出 
+SCA 持续化组件 
+BPEL  webService提供
+BPMN  根据XML 流程编排工具
+
+SDO 
+SAAS   软件是服务
+
+
+一台机器解决不了问题
+与其先把服务部署好 不如先把硬件部署好
+
+融合性的产物  
+
+分布式计算
+并行计算
+效用计算
+网络存储
+虚拟化
+负载均衡  
+部署服过多服务器之后可能会造成资源浪费 ===短板效应  
+云计算的代号  负载均衡
+
+IAAS 基础设施就是服务    OPEN STACK
+PAAS 平台及服务
+DAAS 
+XAAS
+
+大数据
+
+提供更多服务 但是带来了 是否有提供这个服务能力的问题
+
+4V
+volum velocity variety  value 
+
+如何处理大数据  
+
+数据处理方法
+2种
+1 批量处理 
+2 需要立刻拿到数据 流式迭代处理大数据  数据边走边计算  不涉及流计算
+
+
+
+虚拟机
+Oracle Vbox   KVM 
+
+
+WANSCP
+
+
+IPV4 
+IPV6
+ ip地址 和掩码 取与运算 
+ 虚拟IP
+
+ setup
+ 防火墙  改配置文件   selinux iptables
+ 主机名 域名  IP  
+ winscp
+
+
+ PM 
+ Linux 操作
+ 切换启动模式
+ vi /etc/inittab
+X11  改3    esc :wq 保存 
+linux下 没有扩展名的概念   和windos 完全不同   就算写了扩展名 系统也不会解析 而当成了文件名的一部分
+配置hostname
+切换用户 su - xxxxx  但是su xxxx 也可以切换用户 但是权限什么的都没有进行改变  
+进了一个用户 相当于近了一个新的shell 退出就是退出shell   exit
+vi /etc/hosts
+这个文件谁用谁配
+ping 127.0.0.1
+ping localhost
+ping client----主机名
+
+----------------------------------------------------------
+			
+rpm -e --nodeps java-1.6.0-openjdk-*
+rpm -e --nodeps java-1.7.0-openjdk-*
+----------------------------------------------------------
+JAVA_HOME=/usr/local/jdk1.6.0_45
+JRE_HOME=/usr/local/jdk1.6.0_45/jre
+PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin
+CLASSPATH=.:$JAVA_HOME/lib/:$JAVA_HOME/lib/:$JRE_HOME/lib
+export JAVA_HOME JRE_HOME PATH CLASSPATH 
+
+chown -R 用户名:组名 jdk-xxxxxxx 回车
+chown -R soft01:soft01  jdk---- 回车
+
+权限位  
+第一位是- 说明是文件  如果是D 就是文件夹  P PIPE 管道  Linux区分是什么分拣类型靠第一位  第一组 自己
+第二组 5~~~7  WRX root
+第三组 其他  使用进制转换
+chmod 707 jdk-------
+
+为什么要使用./
+
+深入理解java虚拟机  ----垃圾回收算法 机制  。。。
+
+
+source /etc/profile
+
+18622618050
+如果系统在大数据高并发的情况下回报错 too many file open 的错误 那么要进行下面的修改
+ulimit -n 这里会显示出来1024
+vi /etc/security/limits.config
+在文件最后加上2行
+* - nproc 65535
+* - nofile 65535
+这样之后就不会再报错了 
+Linux常用命令 
+ll ls  
+查看隐藏文件 ls -a
+如果linux 的文件权限位第一位是.的话 那么就是一个隐藏文件
+touch 命令 创建一个空文件
+ll .bbb 查看这个创建的文件的大小 
+mkdir
+查看文件 cat more tail
+将文件倒叙查看  tail -n 10 xxxx.xx
+-n 10 代表从后多少行开始看
+cat a b c 将所有文件放一起看
+echo "hello"  相当于system.out.println
+echo "hello" > a 相当于将hello 写入a 文件 但是a文件中的原始数据会将被覆盖  不是append
+echo "hello" >> a 相当于将hello 追加到a 文件内  不会覆盖 直接追加
+
+cp copy
+rm -r .bbb
+rm -rf bbb 直接删除
+
+netstat -anlp |grep 8080 匹配 后面也可以跟正则表达式 
+查看端口占用情况  还有一个常用命令 awk 
+netstat -n|awk '/^tcp/{++S[$NF] END{for(a in S)} print a,S[a]}'
+下面命令会输出下面的结果 
+established 可用
+wait ---
+
+
+| 这个是管道 
+
+ps  显示出来有多少进程的 但是看不出来 
+ps -ef 但是这个命令会出来很多 
+ps -ef |grep tomcat  进行过滤 查询和tomcat 有关的
+kill -9 +进程ID  想关那个 就把查询到的ID加到后面
+
+如何关掉java的进程呢
+ps -ef |grep java
+只要是java 写的东西 那么在进程中就会值显示java  比如 启动了tomcat 但是tomcat是java写的 所以使用这个命令可以找到tomcat
+kill -9 +进程ID  那么就可以直接把这个进程关闭
+但是如果有很多java的进程 那么可以使用 
+killall java   那么所有java的进程会被杀死 停止 
+但是还有一个java 提供的命
+jps +回车 这样所有和java 有关的命令全部显示出来 并且和ps显示出来的进程号是一模一样的  
+
+
+远程连接命令 
+
+
+ssh 用户名@ip/host名字
+scp -r ./xxx.txt hadoop@slave1 :~
+
+PKI 简介
+PKI 秘钥   输入密码的问题 
+公共秘钥体系 
+加密算法 
+单项
+sha1 md5  单项加密 不叫加密 叫抽样 完整性校验 
+如果现在写了一个文件 用这个算法进行加密 会得到一个固定大小位数的字符串
+如果这个文件内容稍微有点变动 那么这个字符串完全不一样  用来校验文件的完整性
+比如说下载的问题  需要先进行MD5校验
+----宇宙碰撞轮  
+
+双向对称
+	对称加密
+	abc 是要算的明文 如果秘钥是asc +1的话 那么密文就是bcd 
+	bcd 秘钥-1 那么就是 abc 
+	+1 -1就是秘钥 
+	但是当获得了多个密文的时候 如果有秘钥 会轻易推到出加密算法  这种算法是很不安全的   但是这个算法很简单  所以运行速度很快
+	标准算法  des aes 
+
+双向非对称
+	加密和解密 是1套算法  会生成2套秘钥  公钥  私钥 
+	加密和解密的速度很慢
+	私钥不是用来加密的  是用来签名的
+
+U盾  私钥 在U盾中  公钥 在网站上  达到传输安全
+SSL http协议
+STL
+
+正题
+GFS google file system
+bigtable
+hadoop  包含了2个东西 HDFS  MapReduce 
+Hadoop 版本 
+Apache 官方社区版
+hortonworks  活跃社区
+Cloudera 发行版
+Intel 发行版
+
+Hadoop 核心项目 
+core:核心包
+HDFS Hadoop Distributed File System 分布式文件系统
+MapReduce  并行计算框架  建议先看这个代码  其次是HDFS
+
+主节点 只有一个 namenode
+从节点 有很多歌 datanodes
+
+集群结构  N+N  还有一种叫做N
+N+N N个主带N个从  
+N 既是主也是从
+Hadoop 是1+N
+
+namenode 存储的是元数据 就是用于描述数据的数据 如果没有元数据 那么数据没有任何意义
+datanode 存储的是数据  如果没有了元数据的话  那么所有的数据也完了
+如果文件过大 那么文件读写越慢 可读性也就越差
+
+ namenode 做的
+
+ 1将元数据写死 存在本地
+ 2将日志进行合并 合并完的数据就是结构化的数据 就会将文件和内存的数据直接做文件映射
+ namenode 不知道那个写文件的进程的状态 
+ secondrynamenode  类似日志备份
+
+
+mapReduce
+主从结构
+oracle 底层是磁盘 磁盘阵列 das nas san 只有分区 没有分布  一致性统计 sharedisk 共享磁盘架构
+磁盘阵列 是一个集群 如果机器想算数据 就需要从某个磁盘上把数据取过来  
+但是如果数据传输快 算的慢 不行 
+ hadoop
+ jobTracker
+ taskTracker  用的不是sharedisk  用的是sharenothing
+
+ 主节点 jobTracker 负责将计算任务分派给taskTrackers进行执行 并且监控taskTracker 的执行情况
+ 以前是数据搬运 
+ 现在是算法搬运
+ 寄存器才能算  没有CPU算不了数据
+
+特点  
+
+可靠性 namenode jobTracker 不能死 主不能死
+
+hadoop 部署方式 
+单机
+伪分布式  为了代码开发 --不重要
+集群分布式
+规划网络  
+关闭防火墙
+修改IP
+修改HOSTNAME
+修改 /etc/hosts 文件
+ssh自动登录
+安装jdk
+文件.shh 默认 700
+shh 认证方式有很多
+ssh-keygen -t rsa -P ''
+再ls会多2个文件  带.pub的是公钥 没有的是私钥 将公钥加到对方哪里
+cat id_rsa.pub >>authorized_keys   =====ssh配置文件写死了 规定了叫这个名字  运行结束之后 可以more athorized_keys 查看
+authorized_keys 这个权限要改成600 千万 千万别忘了 
+cd.. 
+scp -r ./.ssh/* 用户名＠ip :~
+为什么要配 无密码认证 
+通过无密码认证启动其他机器
+namenode 元数据
+datanode 数据 
+mapreduce 结果
+755自己怎么都行 其他人只能读写
+hadoop不认IP hdfs://master:9000   file:////
+
+最后一项 用户权限校验  hadoop 的权限校验是   谁启用的hadoop 谁的权限就是最高的
+Hadoop namenode-format
+
+
+vi /etc/sysconfig/network-scripts/ifcfg-eth0
+
+onboot=yes
+IPADDR=192.168.164.2
+GATEWAY=254
+:wq
+
+vi /etc/sysconfig/network
+
+HOSTNAME=xxx
+
+vi /etc/hosts
+
+127.0.0.1  locaasdasda.....
+...
+192.168.164.2 master
+192.168.1634.3 slave1
+:wq
+
+service network restart
+
+
+ping master
+
+
+
+
