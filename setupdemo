@@ -1,5 +1,36 @@
+配置 /etc/profile
 JAVA_HOME=/usr/java/jdk1.6.0_45
 JRE_HOME=$JAVA_HOME/jre
 PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin
 CLASSPATH=.:$JAVA_HOME/lib:$JRE_HOME/lib
 export JAVA_HOME JRE_HOME PATH CLASSPATH
+
+######################################################################
+
+配置/etc/sysconfig/network-scripts/ifcfg-eth0
+
+DEVICE=eth0
+HWADDR=00:0C:29:01:FF:78
+TYPE=Ethernet
+UUID=0ca7c5f6-daff-4f43-ae2b-d4155e687d60
+
+#开机启动网卡
+ONBOOT=yes
+
+NM_CONTROLLED=yes
+
+#使用静态IP配置
+BOOTPROTO=static
+
+#对应的子网广播地址
+BROADCAST=192.168.0.255
+#网卡对应的网络掩码
+NETMASK=255.255.255.0
+#网卡对应的网段地址
+NETWORK=192.168.36.0
+#设置网卡获得的IP地址
+IPADDR=192.168.36.129
+#设置Linux的网关(由虚拟机网络配置决定)
+GATEWAY=192.168.36.2
+#设置Linux的DNS(由虚拟机网络配置决定)
+DNS1=192.168.36.2
