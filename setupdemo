@@ -1,3 +1,8 @@
+
+关selinux 和 iptables
+[root@base ~]# vi /etc/selinux/config
+[root@base ~]# chkconfig iptables off
+
 安装JDK(jdk-6u45-linux-i586-rpm.bin)配置环境/etc/profile
 JAVA_HOME=/usr/java/jdk1.6.0_45
 JRE_HOME=$JAVA_HOME/jre
@@ -28,12 +33,12 @@ BOOTPROTO=static
 
 #对应的子网广播地址
 BROADCAST=192.168.36.255
-#网卡对应的网络掩码
-NETMASK=255.255.255.0
 #网卡对应的网段地址
 NETWORK=192.168.36.0
 #设置网卡获得的IP地址
 IPADDR=192.168.36.129
+#网卡对应的网络掩码
+NETMASK=255.255.255.0
 #设置Linux的网关(由虚拟机网络配置决定)
 GATEWAY=192.168.36.2
 #设置Linux的DNS(由虚拟机网络配置决定通常网关也是内网DNS，转发DNS请求)
@@ -67,13 +72,20 @@ chmod 600 authorized_keys
 root 用户编辑 /etc/ssh/sshd_config
 vi /etc/ssh/sshd_config
 
+去掉 26行 左右 以下配置的注释
+HostKey /etc/ssh/ssh_host_rsa_key
+
 去掉 47 48 49 行的注释 (对应下面这三行)
+
 
 RSAAuthentication yes
 PubkeyAuthentication yes
 AuthorizedKeysFile      .ssh/authorized_keys
 
 配置.ssh权限防止没权限读取ssh的秘钥
+***一定要使用hadoop用户执行不能root代劳***
+
+
 chown -R hadoop:hadoop /home/hadoop
 chmod 700 /home/hadoop
 chmod 700 /home/hadoop/.ssh
