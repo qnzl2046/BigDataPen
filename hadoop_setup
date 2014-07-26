@@ -1,0 +1,245 @@
+####################################################################################################################
+一、安装虚拟机
+　　使用Vmware和老师下发的CentOS6.5镜像文件，创建三台虚拟机（一主两从模式），具体创建方法可以选择分别安装或者克隆。
+　　创建时可以选择图形化界面模式，待所有配置完成后，使用命令将两台从机的启动模式切换为命令行：
+　　[root@base ~]$vi  /etc/inittab
+　　# Default runlevel. The runlevels used are:
+　　#   0 - halt (Do NOT set initdefault to this)
+　　#   1 - Single user mode
+　　#   2 - Multiuser, without NFS (The same as 3, if you do not have networking)
+　　#   3 - Full multiuser mode
+　　#   4 - unused
+　　#   5 - X11
+　　#   6 - reboot (Do NOT set initdefault to this)
+　　# 
+　　id:5:initdefault:
+　　其中，3为命令行模式，5为图形界面模式。
+#################################################################################################################
+二、关闭selinux 和 iptables
+1、关闭selinux
+命令：[root@base ~]# vi /etc/selinux/config
+# This file controls the state of SELinux on the system.
+# SELINUX= can take one of these three values:
+#     enforcing - SELinux security policy is enforced.
+#     permissive - SELinux prints warnings instead of enforcing.
+#     disabled - No SELinux policy is loaded.
+SELINUX=disable
+# SELINUXTYPE= can take one of these two values:
+#     targeted - Targeted processes are protected,
+#     mls - Multi Level Security protection.
+#SELINUXTYPE=targeted
+#
+将SELINUX设置为disable
+2 、关闭iptables
+2.1 命令：[root@base ~]# chkconfig iptables off
+2.2 或者使用命令：[root@base ~]#setup，进入设置界面，选择“防火墙配置”，将默认的“*”去掉（按空格键就可以去掉），然后一路确定保存即可。
+################################################################################################################
+三、安装JDK(jdk-6u45-linux-i586-rpm.bin)配置环境/etc/profile
+Step1:命令[root@base ~]$chmod +x jdk-6u45-linux-i586-rpm.bin
+将文件变成可执行文件
+Step2：执行命令[root@base ~]$./jdk-6u45-linux-i586-rpm.bin 解压文件
+Step3:将解压出的jdk1.6.0_45文件夹移动到/usr/java下
+　　　[root@base ~]$mv  -r  jdk1.6.0_45  /usr/java/
+Step4:修改/etc/profile文件
+[root@base ~]$ vi /etc/profile  
+将以下代码加入到文件最后：
+JAVA_HOME=/usr/java/jdk1.6.0_45
+JRE_HOME=$JAVA_HOME/jre
+PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin
+CLASSPATH=.:$JAVA_HOME/lib:$JRE_HOME/lib
+export JAVA_HOME JRE_HOME PATH CLASSPATH
+
+.bash_logout 配置用户登录出去执行什么
+.bash_profile 配置用户特殊的profile
+.bashrc 配置bash专用的(bash是一种shell linux 可以有很多种shell 比如C shell 就是C语言风格的shell 如果用C shell 这个文件就没用了)
+#####################################################################
+四、配置/etc/sysconfig/network-scripts/ifcfg-eth0
+DEVICE=eth0
+
+#复制的虚拟机需要改这个硬件地址(也叫网卡的MAC地址)
+HWADDR=00:0C:29:01:FF:78
+TYPE=Ethernet
+UUID=0ca7c5f6-daff-4f43-ae2b-d4155e687d60
+
+#开机启动网卡
+ONBOOT=yes
+
+NM_CONTROLLED=yes
+
+#使用静态IP配置
+BOOTPROTO=static
+
+#对应的子网广播地址
+BROADCAST=192.168.36.255
+#网卡对应的网段地址
+NETWORK=192.168.36.0
+#设置网卡获得的IP地址
+IPADDR=192.168.36.129
+#网卡对应的网络掩码
+NETMASK=255.255.255.0
+#设置Linux的网关(由虚拟机网络配置决定)
+GATEWAY=192.168.36.2
+#设置Linux的DNS(由虚拟机网络配置决定通常网关也是内网DNS，转发DNS请求)
+DNS1=192.168.36.2
+
+有外网测试安装setuptool
+yum -y install setuptool
+没有外网 ifconfig 看有否有 eth0 并且eth0 有IP 能ping通其他的虚拟机
+#####################################################################
+五、修改/etc/hosts
+命令：[root@base ~]$vi  /etc/hosts
+192.168.36.130 master
+192.168.36.131 slave1
+192.168.36.132 slave2
+192.168.36.133 slave3
+####################################################################
+六、配置打开文件数，避免too many open files错误发生：
+命令：命令：[root@base ~]$vi  /etc/security/limits.conf
+在打开iade文件的最后加入以下两行代码 ：
+*  -  nproc  65535
+*  -  nofile  65535
+使用命令：[root@base ~]$ulimit -n   可查看最大打开文件数
+#####################################################################
+七、配置ssh无密码登录：
+确保创建了 hadoop 这个用户 
+Step1:切换到普通用户：[root@base ~]$su - hadoop
+Step2:在/home/hadoop下创建.ssh文件夹：[hadoop@base ~]$mkdir ~/.ssh
+Step3:进入.ssh文件夹：[hadoop@base ~]$cd ~/.ssh
+Step4:创建公钥和私钥：[hadoop@base ~]$ssh-keygen -t rsa -P ''Step5:将生成的id_rsa.pub文件追加到authorized_keys文件中：
+[hadoop@base ~]$cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+Step6:修改authorized_keys文件权限[hadoop@base ~]$chmod 600 authorized_keys
+
+Step7:在root 用户下编辑 /etc/ssh/sshd_config文件
+[root@base ~]$vi /etc/ssh/sshd_config
+
+去掉 26行 左右 以下配置的注释
+HostKey /etc/ssh/ssh_host_rsa_key
+
+去掉 47 48 49 行的注释 (对应下面这三行)
+RSAAuthentication yes
+PubkeyAuthentication yes
+AuthorizedKeysFile .ssh/authorized_keys
+
+Step8:配置.ssh权限防止没权限读取ssh的秘钥
+***一定要使用hadoop用户执行不能root代劳***
+chown -R hadoop:hadoop /home/hadoop
+chmod 700 /home/hadoop
+chmod 700 /home/hadoop/.ssh
+chmod 644 /home/hadoop/.ssh/authorized_keys
+chmod 600 /home/hadoop/.ssh/id_rsa
+#####################################################################
+八、安装配置hadoop：
+Step1:使用ssh工具hadoop 1.0.4 传到 虚拟机，放到 /home/hadoop 目录下
+
+Step2:解压：[hadoop@base ~]$tar -vxzf  hadoop-1.0.4.tar.gz
+
+Step3:修改解压后的目录名(mv 是移动文件 相当于改名)
+[hadoop@base ~]$mv  hadoop-1.0.4  hadoop
+Step4:在/home/hadoop/hadoo目录下创建data和tmp两个文件夹，并将权限修改为755
+mkdir ~/hadoop/data/
+mkdir ~/hadoop/tmp/
+chmod 755 ~/hadoop/data/
+chmod 755 ~/hadoop/tmp/
+
+Step5:配置root用户目录下的 /etc/profile
+将以下内容编辑到文本末尾：
+export HADOOP_HOME=/home/hadoop/hadoop
+export PATH=$PATH:$HADOOP_HOME/bin
+
+Step6:统一修改hadoop用户conf目录(~/hadoop/conf)下的各种配置文件
+
+修改配置文件hadoop-env.sh
+搜索到JAVA_HOME所在行，然后将默认的“#”去掉，也就是打开注释，然后如下配置：
+export JAVA_HOME=/usr/java/jdk1.6.0_45
+
+修改配置文件 core-site.xml
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!-- Put site-specific property overrides in this file. -->
+<configuration>
+ <property>
+      <name>fs.default.name</name>
+      <value>hdfs://master:9000</value>
+ </property>
+</configuration>
+
+修改配置文件 hdfs-site.xml
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!-- Put site-specific property overrides in this file. -->
+<configuration>
+ <property>
+  <name>dfs.replication</name>
+  <value>3</value>
+ </property>
+ <property>
+   <name>dfs.name.dir</name>
+   <value>/home/hadoop/hadoop/namenode/</value>
+  </property>
+  <property>
+   <name>dfs.data.dir</name>
+   <value>/home/hadoop/hadoop/data/</value>
+  </property>
+  <property>
+    <name>hadoop.tmp.dir</name>
+    <value>/home/hadoop/hadoop/tmp/</value>
+  </property>
+  <property>
+   <name>dfs.permissions</name>
+   <value>false</value>
+  </property>
+</configuration>
+
+修改配置文件 mapred-site.xml
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!-- Put site-specific property overrides in this file. -->
+<configuration>
+ <property>
+   <name>mapred.job.tracker</name>
+   <value>master:9001</value>
+ </property>
+ <property>
+   <name>mapred.tasktracker.map.tasks.maximum</name>
+   <value>2</value>
+ </property>
+ <property>
+    <name>mapred.tasktracker.reduce.tasks.maximum</name>
+    <value>2</value>
+ </property>
+</configuration>
+
+修改配置文件 masters
+配置如下：
+master
+
+修改配置文件 slaves
+配置如下：
+slave1
+slave2
+slave3
+
+Step7:复制4份虚拟机 并配置静态IP
+vm_master 192.168.36.130
+vm_slave1 192.168.36.131
+vm_slave2 192.168.36.132
+vm_slave3 192.168.36.133
+
+Step8:将配置完成后的整个hadoop文件夹分发到各个从机
+
+Step9:使用命令[hadoop@vm_master ~]$hadoop  namenode  -format
+初始化namenode
+Step10:启动hadoop：
+start-all.sh
+启动后使用jps命令查看：
+主机上有四个进程：
+jps
+namenode 1002
+secondarynamenode 1011
+jobtracker 1012
+从机上三个进程：
+jps
+datanode 2
+tasktracker 10
+
+然后通过http://master:50070和http://master:50030查看监控界面。
